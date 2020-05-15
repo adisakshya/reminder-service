@@ -1,7 +1,7 @@
-- Improve DTO
-- Exception Handling
-- Entity Relations
-- Migrations
-- Authentication
-- Tests
-- Docs
+[ ] Improve DTO
+[ ] Exception Handling
+[ ] Entity Relations
+[x] Migrations
+[ ] Authentication
+[ ] Tests
+[ ] Docs
