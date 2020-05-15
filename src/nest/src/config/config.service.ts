@@ -34,7 +34,12 @@ class ConfigService {
             'password': this.getValue('POSTGRES_PASSWORD'),
             'database': this.getValue('POSTGRES_DATABASE'),
             'ssl': this.isProduction(),
-            'entities': [Item, User],
+            'entities': ['**/*.entity{.ts,.js}'],
+            'migrationsTableName': 'migration',
+            'migrations': ['src/migration/*.ts'],
+            'cli': {
+                'migrationsDir': 'src/migration',
+            },
             'logging': false,
             'synchronize': true,
         };
