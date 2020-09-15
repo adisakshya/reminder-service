@@ -7,3 +7,6 @@ A NestJS codebase implementing E-commerce Webstore backend.
 - Using combination of SQL and NoSQL Databases (PostgreSQL + MongoDB).
 - Exploring testing.
 - Exploring deployments.
+
+
+NOTE: Will be transformed to reminder-service for continuous-improvement project
