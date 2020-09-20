@@ -5,11 +5,28 @@
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "es2017",
+    "target": "es2018",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
-    "incremental": true
-  }
+    "incremental": true,
+    "paths": {
+      "@common/*": [
+        "src/common/*"
+      ],
+      "@event/*": [
+        "src/event/*"
+      ],
+      "@reminder/*": [
+        "src/reminder/*"
+      ],
+      "@entity/*": [
+        "src/database/entity/*"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }
