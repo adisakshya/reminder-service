@@ -21,5 +21,4 @@ export class PagingQuery {
     @IsNumber()
     @Type(() => Number)
     offset: number = 0;
-
 }

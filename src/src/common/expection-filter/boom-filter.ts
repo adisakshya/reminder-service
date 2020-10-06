@@ -30,7 +30,6 @@ export class BoomExceptionFilter implements ExceptionFilter {
                 status: 500
             };
         }
-
         response.status(error.status).json({error});
     }
 }

@@ -36,10 +36,9 @@ export class ReminderController {
     public async fetchInPages(@ReadHeader() header: ReadHeaders, @Query() query: PagingQuery): Promise<PagingResponse> {
         const [reminders, total] = await this.reminderService.fetchInPages(header.userId, query);
         return new PagingResponse("reminders", reminders, {
-            href: "",
             limit: query.limit,
             offset: query.offset,
-            next: "", total
+            total: total
         });
     }
 
