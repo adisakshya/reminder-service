@@ -4,6 +4,7 @@ import {Reminder} from "@entity/reminder.entity";
 import {Module} from "@nestjs/common";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {ReminderModule} from "@reminder/reminder.module";
+import {EventModule} from "@event/event.module";
 
 @Module({
     imports: [TypeOrmModule.forRootAsync({
@@ -13,14 +14,13 @@ import {ReminderModule} from "@reminder/reminder.module";
             database: config.dbName,
             password: config.dbPassword,
             host: config.dbHost,
-            port: 5431,
             entities: [Reminder],
             logging: !config.isProduction,
             synchronize: true,
         }),
         imports: [CommonModule],
         inject: [ApiConfigService]
-    }), CommonModule, ReminderModule],
+    }), CommonModule, ReminderModule, EventModule],
 })
 export class AppModule {
 }

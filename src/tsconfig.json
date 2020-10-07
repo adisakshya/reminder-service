@@ -17,6 +17,9 @@
       "@reminder/*": [
         "src/reminder/*"
       ],
+      "@event/*": [
+        "src/event/*"
+      ],
       "@entity/*": [
         "src/database/entity/*"
       ]
