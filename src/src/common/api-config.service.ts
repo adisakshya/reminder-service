@@ -32,9 +32,9 @@ export class ApiConfigService {
         return this.configService.get<string>('DB_USER') ?? 'root';
     }
 
-    get reminderTopicArn(): string {
+    get eventTopicArn(): string {
         // Get sns-topic name from environment or use alternative for local development (localstack)
-        return this.configService.get<string>('REMINDER_TOPIC_ARN') ?? 'arn:aws:sns:us-east-1:000000000000:reminder-topic';
+        return this.configService.get<string>('EVENT_TOPIC_ARN') ?? 'arn:aws:sns:us-east-1:000000000000:event-topic';
     }
 
 }

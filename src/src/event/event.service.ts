@@ -14,13 +14,19 @@ export class EventService {
 
     public async reminderCreated(event: Event & { userEmail: string }) {
         this.logger.log(`Recieved reminder:added event for reminder ${event.itemId}`);
+        this.logger.log(`Topic ARN: ${this.configService.eventTopicArn}`);
         this.sns.publish({
             Message: JSON.stringify({
                 userId: event.userId,
                 userEmail: event.userEmail,
-                ...event.eventData.reminder
+                itemId: event.itemId,
+                eventData: event.eventData.reminder
             }),
             MessageAttributes: {
+                eventItemType: {
+                    DataType: 'String',
+                    StringValue: 'reminder'
+                },
                 eventType: {
                     DataType: 'String',
                     StringValue: 'reminder:created'
@@ -30,7 +36,7 @@ export class EventService {
                     StringValue: event.userId
                 }
             },
-            TopicArn: this.configService.reminderTopicArn,
+            TopicArn: this.configService.eventTopicArn
         }).promise();
     }
 
@@ -40,9 +46,14 @@ export class EventService {
             Message: JSON.stringify({
                 userId: event.userId,
                 userEmail: event.userEmail,
-                ...event.eventData.reminder
+                itemId: event.itemId,
+                eventData: event.eventData.reminder
             }),
             MessageAttributes: {
+                eventItemType: {
+                    DataType: 'String',
+                    StringValue: 'reminder'
+                },
                 eventType: {
                     DataType: 'String',
                     StringValue: 'reminder:updated'
@@ -52,7 +63,7 @@ export class EventService {
                     StringValue: event.userId
                 }
             },
-            TopicArn: this.configService.reminderTopicArn
+            TopicArn: this.configService.eventTopicArn
         }).promise();
     }
 
@@ -62,9 +73,14 @@ export class EventService {
             Message: JSON.stringify({
                 userId: event.userId,
                 userEmail: event.userEmail,
-                ...event.eventData.reminder
+                itemId: event.itemId,
+                eventData: event.eventData.reminder
             }),
             MessageAttributes: {
+                eventItemType: {
+                    DataType: 'String',
+                    StringValue: 'reminder'
+                },
                 eventType: {
                     DataType: 'String',
                     StringValue: 'reminder:deleted'
@@ -74,7 +90,7 @@ export class EventService {
                     StringValue: event.userId
                 }
             },
-            TopicArn: this.configService.reminderTopicArn
+            TopicArn: this.configService.eventTopicArn
         }).promise();
     }
 

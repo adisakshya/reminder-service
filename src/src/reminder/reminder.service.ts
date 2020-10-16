@@ -59,7 +59,7 @@ export class ReminderService {
         await reminder.remove();
         await this.eventService.reminderDeleted({
             userId, userEventId: eventId,
-            itemId: reminder.id,
+            itemId: deletedReminderId,
             eventData: {reminder},
             userEmail: userName
         });
