@@ -41,7 +41,7 @@ export class ReminderService {
         this.logger.log(`Updating reminder ${reminder.id} for user ${userId}`);
         await Reminder.update(reminder.id, {date, notifyOffset, notifyType});
         this.logger.log(`Updated reminder ${reminder.id} for user ${userId}`);
-        reminder.reload();
+        await reminder.reload();
         await this.eventService.reminderUpdated({
             userId, userEventId: eventId,
             itemId: reminder.id,
