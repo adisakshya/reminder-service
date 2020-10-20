@@ -1,4 +1,5 @@
-# Reminder-service deployment
+# Reminder Service Deployment
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -23,28 +24,28 @@ spec:
           env:
             - name: NODE_ENV
               value: development
-            - name: DB_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: database
-                  key: name
             - name: DB_HOST
               valueFrom:
                 secretKeyRef:
-                  name: database
+                  name: dev-reminder-db-secrets
                   key: host
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: dev-reminder-db-secrets
+                  key: name
             - name: DB_PASS
               valueFrom:
                 secretKeyRef:
-                  name: database
+                  name: dev-reminder-db-secrets
                   key: password
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
-                  name: database
+                  name: dev-reminder-db-secrets
                   key: user
             - name: EVENT_TOPIC_ARN
               valueFrom:
                 secretKeyRef:
-                  name: sns-topics
+                  name: dev-event-sns-topics
                   key: event-topic
