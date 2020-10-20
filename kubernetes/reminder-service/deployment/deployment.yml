@@ -1,0 +1,50 @@
+# Reminder-service deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reminder-service-deployment
+  namespace: development
+  resourceVersion: '1.0.0'
+spec:
+  selector:
+    matchLabels:
+      app: reminder-service
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: reminder-service
+    spec:
+      containers:
+        - name: reminder-service
+          image: adisakshya/reminder-service:1.0.0-dev
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              value: development
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: database
+                  key: name
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: database
+                  key: host
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: database
+                  key: password
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: database
+                  key: user
+            - name: EVENT_TOPIC_ARN
+              valueFrom:
+                secretKeyRef:
+                  name: sns-topics
+                  key: event-topic
