@@ -20,7 +20,7 @@ spec:
         - name: reminder-service
           image: adisakshya/reminder-service:1.0.0-dev
           ports:
-            - containerPort: 3000
+            - containerPort: 80
           env:
             - name: NODE_ENV
               value: development
@@ -47,5 +47,5 @@ spec:
             - name: EVENT_TOPIC_ARN
               valueFrom:
                 secretKeyRef:
-                  name: dev-event-sns-topics
+                  name: dev-sns-topics-secrets
                   key: event-topic
