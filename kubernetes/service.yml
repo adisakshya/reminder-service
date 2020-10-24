@@ -3,10 +3,11 @@ kind: Service
 metadata:
   name: dev-reminder-service
   namespace: development
+  labels:
+    app: dev-reminder-service
 spec:
-  type: LoadBalancer
   selector:
-    app: reminder-service
+    app: dev-reminder-service
   ports:
     - protocol: TCP
       port: 80

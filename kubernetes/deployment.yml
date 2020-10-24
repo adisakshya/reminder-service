@@ -1,23 +1,23 @@
-# Reminder Service Deployment
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: reminder-service-deployment
+  name: dev-reminder-service
   namespace: development
   resourceVersion: '1.0.0'
+  labels:
+    app: dev-reminder-service
 spec:
   selector:
     matchLabels:
-      app: reminder-service
-  replicas: 2
+      app: dev-reminder-service
+  replicas: 1
   template:
     metadata:
       labels:
-        app: reminder-service
+        app: dev-reminder-service
     spec:
       containers:
-        - name: reminder-service
+        - name: dev-reminder-service
           image: adisakshya/reminder-service:1.0.0-dev
           ports:
             - containerPort: 80
