@@ -20,9 +20,10 @@ export class ReminderService {
     public async create(req: CreateReminder, headers: WriteHeaders): Promise<EntityResponse> {
         const {userId, eventId, userName} = headers;
         const {date, isRecurring, notifyOffset, notifyType, message, url} = req;
+        const transformedDate = new Date(date.setSeconds(0,0));
         this.logger.log(`Creating reminder for user ${userId}`);
         const reminder = await Reminder.create({
-            id: this.generateID(), date, isRecurring, notifyOffset, notifyType, message, userId, url
+            id: this.generateID(), date: transformedDate, isRecurring, notifyOffset, notifyType, message, userId, url
         }).save();
         this.logger.log(`Reminder created for user ${userId}`);
         await this.eventService.reminderCreated({
@@ -38,8 +39,9 @@ export class ReminderService {
         const {userId, eventId, userName} = headers;
         const reminder = await this.findById(userId, id);
         const {date, notifyOffset, notifyType} = req;
+        const transformedDate = new Date(date.setSeconds(0,0));
         this.logger.log(`Updating reminder ${reminder.id} for user ${userId}`);
-        await Reminder.update(reminder.id, {date, notifyOffset, notifyType});
+        await Reminder.update(reminder.id, {date: transformedDate, notifyOffset, notifyType});
         this.logger.log(`Updated reminder ${reminder.id} for user ${userId}`);
         await reminder.reload();
         await this.eventService.reminderUpdated({
