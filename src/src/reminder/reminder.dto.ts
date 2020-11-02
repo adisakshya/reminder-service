@@ -1,6 +1,6 @@
 import {ApiProperty} from "@nestjs/swagger";
 import {Type} from "class-transformer";
-import {IsBoolean, IsDate, IsIn, IsNumber, IsOptional, IsString, Min, IsUrl} from "class-validator";
+import {IsBoolean, IsDate, IsIn, IsNumber, IsOptional, IsString, Min, IsUrl, Max} from "class-validator";
 
 export class CreateReminder {
 
@@ -21,13 +21,13 @@ export class CreateReminder {
     isRecurring: boolean = false;
 
     @ApiProperty({
-        description: "Time before which user is to be notified of this event",
+        description: "Minutes before which user is to be notified of this event",
         required: false
     })
     @IsNumber()
     @Min(0)
     @IsOptional()
-    notifyOffset: number = 10;
+    notifyOffset: number = 0;
 
     @ApiProperty({
         description: "Type of notification user would like to have",
