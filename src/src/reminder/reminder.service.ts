@@ -23,7 +23,7 @@ export class ReminderService {
         const transformedDate = date.setSeconds(0,0) - notifyOffset*60*1000;
         const currentTime = new Date().getTime();
         if(transformedDate - currentTime <= 60*1000) {
-            throw Boom.notFound("Difference between effective due-date and current-date must be greater than 1 minute", {reason: "INVALID_DUEDATE"});
+            throw Boom.badData("Difference between effective due-date and current-date must be greater than 1 minute", {reason: "INVALID_DUEDATE"});
         }
         this.logger.log(`Creating reminder for user ${userId}`);
         const reminder = await Reminder.create({
