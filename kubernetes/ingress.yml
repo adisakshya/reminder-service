@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: dev-reminder-service-ingress
+  namespace: development
+  annotations:
+    kubernetes.io/ingress.class: kong
+spec:
+  rules:
+    - http:
+        paths:
+        - path: /
+          backend:
+            serviceName: dev-reminder-service
+            servicePort: 80

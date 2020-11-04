@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dev-reminder-service
+  namespace: development
+  labels:
+    app: dev-reminder-service
+spec:
+  selector:
+    app: dev-reminder-service
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

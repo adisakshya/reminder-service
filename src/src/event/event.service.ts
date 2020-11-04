@@ -14,7 +14,6 @@ export class EventService {
 
     public async reminderCreated(event: Event & { userEmail: string }) {
         this.logger.log(`Recieved reminder:added event for reminder ${event.itemId}`);
-        this.logger.log(`Topic ARN: ${this.configService.eventTopicArn}`);
         this.sns.publish({
             Message: JSON.stringify({
                 userId: event.userId,
