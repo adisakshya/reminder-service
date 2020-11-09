@@ -30,14 +30,7 @@ export class ReadHeaders {
 export class WriteHeaders extends ReadHeaders {
 
     /**
-     * Identifies an event uniquely
+     * Add header attributes specific to write operations here
      */
-    @Expose()
-    @IsString()
-    "idempotency-key": string;
-
-    public get eventId() {
-        return this["idempotency-key"];
-    }
 
 }
