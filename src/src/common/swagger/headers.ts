@@ -18,12 +18,8 @@ export const ApiCommonHeader = (): ClassDecorator => target => {
 
 export function ApiWriteHeader(): MethodDecorator {
     return function(target, propertyKey, descriptor) {
-        ApiHeaders([
-            {
-                name: "Idempotency-Key",
-                description: 'Unique key to identify the request',
-                required: true,
-            }
-        ])(target, propertyKey, descriptor);
+        /**
+         * Add ApiHeaders specific to write operations here
+         */
     };
 }

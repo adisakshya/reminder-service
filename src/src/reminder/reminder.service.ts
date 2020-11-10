@@ -18,7 +18,7 @@ export class ReminderService {
     }
 
     public async create(req: CreateReminder, headers: WriteHeaders): Promise<EntityResponse> {
-        const {userId, eventId, userName} = headers;
+        const {userId, userName} = headers;
         const {date, isRecurring, notifyOffset, notifyType, message, url} = req;
         const transformedDate = date.setSeconds(0,0) - notifyOffset*60*1000;
         const currentTime = new Date().getTime();
@@ -31,7 +31,7 @@ export class ReminderService {
         }).save();
         this.logger.log(`Reminder created for user ${userId}`);
         await this.eventService.reminderCreated({
-            userId, userEventId: eventId,
+            userId,
             itemId: reminder.id,
             eventData: {reminder},
             userEmail: userName
@@ -40,7 +40,7 @@ export class ReminderService {
     }
 
     public async update(id: string, req: UpdateReminder, headers: WriteHeaders): Promise<Reminder> {
-        const {userId, eventId, userName} = headers;
+        const {userId, userName} = headers;
         const reminder = await this.findById(userId, id);
         if (!reminder) {
             throw  Boom.notFound("Missing Reminder", {reason: "MISSING_REMINDER"});
@@ -56,7 +56,7 @@ export class ReminderService {
         this.logger.log(`Updated reminder ${reminder.id} for user ${userId}`);
         await reminder.reload();
         await this.eventService.reminderUpdated({
-            userId, userEventId: eventId,
+            userId,
             itemId: reminder.id,
             eventData: {reminder},
             userEmail: userName
@@ -65,7 +65,7 @@ export class ReminderService {
     }
 
     public async delete(id: string, headers: WriteHeaders): Promise<void> {
-        const {userId, eventId, userName} = headers;
+        const {userId, userName} = headers;
         const reminder = await this.findById(userId, id);
         if (!reminder) {
             throw  Boom.notFound("Missing Reminder", {reason: "MISSING_REMINDER"});
@@ -74,7 +74,7 @@ export class ReminderService {
         const deletedReminderId = reminder.id;
         await reminder.remove();
         await this.eventService.reminderDeleted({
-            userId, userEventId: eventId,
+            userId,
             itemId: deletedReminderId,
             eventData: {reminder},
             userEmail: userName
