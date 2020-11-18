@@ -6,6 +6,7 @@ metadata:
   labels:
     app: dev-reminder-service
 spec:
+  type: NodePort
   selector:
     app: dev-reminder-service
   ports:

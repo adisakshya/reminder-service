@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   name: dev-reminder-service
   namespace: development
-  resourceVersion: '1.0.0'
   labels:
     app: dev-reminder-service
 spec:
@@ -48,4 +47,4 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: dev-sns-topics-secrets
-                  key: event-topic
+                  key: event_topic
