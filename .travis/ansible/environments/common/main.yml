@@ -20,4 +20,4 @@ k8s_no_log: true
 resource_name: reminder-service
 
 # Docker image details
-docker_image_name: 'adisakshya/notification-service'
+docker_image_name: 'adisakshya/reminder-service'
