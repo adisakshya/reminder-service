@@ -17,6 +17,8 @@ stages:
 
 
 install:
+  # Install Python dependencies
+  - pip install -r requirements.txt
   # Install NodeJS and Yarn
   - nvm install 12.17.0
   - npm install -g yarn
