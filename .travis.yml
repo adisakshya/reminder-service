@@ -1,6 +1,6 @@
-language: node_js
-node_js: 
-  - "12"
+language: python
+python: 
+  - "3.8"
 services:
   - docker
 
@@ -9,11 +9,17 @@ env:
     - IMAGE_NAME=reminder-service
 
 stages:
-  - build-test
-  - name: deploy-dev
+  - build
+  - name: push-dev-docker-image
     if: branch = development AND type = push AND fork = false
-  - name: deploy-prod
+  - name: push-prod-docker-image
     if: branch = production AND type = push AND fork = false
+
+
+install:
+  # Install NodeJS and Yarn
+  - nvm install 12.17.0
+  - npm install -g yarn
 
 before_script:
   # Move to source directory
@@ -23,7 +29,8 @@ before_script:
 
 jobs:
   include:
-    - stage: build-test
+    - stage: build
+      name: "Build and Test"
       script:
         # Install dependencies
         - yarn install
@@ -31,7 +38,8 @@ jobs:
         - yarn build
         # Run tests
         - yarn test --passWithNoTests
-    - stage: deploy-dev
+    - stage: push-dev-docker-image
+      name: "Push development docker image to Docker Hub"
       script:
         # Install dependencies
         - yarn install
@@ -45,7 +53,8 @@ jobs:
         - docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD"
         - docker tag $IMAGE_NAME:latest $DOCKER_USER/$IMAGE_NAME:$VERSION-dev
         - docker push $DOCKER_USER/$IMAGE_NAME:$VERSION-dev
-    - stage: deploy-prod
+    - stage: push-prod-docker-image
+      name: "Push production docker image to Docker Hub"
       script:
         # Install dependencies
         - yarn install
