@@ -1,8 +1,12 @@
 language: python
-python: 
-  - "3.8"
+
 services:
   - docker
+addons:
+  apt:
+    packages:
+      - "python3"
+      - "python3-pip"
 
 env:
   global:
@@ -31,59 +35,64 @@ before_script:
 
 jobs:
   include:
-    - stage: build
-      name: "Build and Test"
-      script:
-        # Install dependencies
-        - yarn install
-        # Build source
-        - yarn build
-        # Run tests
-        - yarn test --passWithNoTests
-    - stage: push-dev-docker-image
-      name: "Push development docker image to Docker Hub"
-      script:
-        # Install dependencies
-        - yarn install
-        # Build source
-        - yarn build
-        # Build docker image
-        - docker build -t $IMAGE_NAME .
-        # List docker images
-        - docker images
-        # Push dev-docker image to dockerhub
-        - docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD"
-        - docker tag $IMAGE_NAME:latest $DOCKER_USER/$IMAGE_NAME:$VERSION-dev
-        - docker push $DOCKER_USER/$IMAGE_NAME:$VERSION-dev
-    - stage: push-prod-docker-image
-      name: "Push production docker image to Docker Hub"
-      script:
-        # Install dependencies
-        - yarn install
-        # Build source
-        - yarn build
-        # Build docker image
-        - docker build -t $IMAGE_NAME .
-        # List docker images
-        - docker images
-        # Push prod-docker image to dockerhub
-        - docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD"
-        - docker tag $IMAGE_NAME:latest $DOCKER_USER/$IMAGE_NAME:$VERSION-prod
-        - docker tag $IMAGE_NAME:latest $DOCKER_USER/$IMAGE_NAME:latest
-        - docker push $DOCKER_USER/$IMAGE_NAME:latest
-        - docker push $DOCKER_USER/$IMAGE_NAME:$VERSION-prod
+    # - stage: build
+    #   name: "Build and Test"
+    #   script:
+    #     # Install dependencies
+    #     - yarn install
+    #     # Build source
+    #     - yarn build
+    #     # Run tests
+    #     - yarn test --passWithNoTests
+    # - stage: push-dev-docker-image
+    #   name: "Push development docker image to Docker Hub"
+    #   script:
+    #     # Install dependencies
+    #     - yarn install
+    #     # Build source
+    #     - yarn build
+    #     # Build docker image
+    #     - docker build -t $IMAGE_NAME .
+    #     # List docker images
+    #     - docker images
+    #     # Push dev-docker image to dockerhub
+    #     - docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD"
+    #     - docker tag $IMAGE_NAME:latest $DOCKER_USER/$IMAGE_NAME:$VERSION-dev
+    #     - docker push $DOCKER_USER/$IMAGE_NAME:$VERSION-dev
+    # - stage: push-prod-docker-image
+    #   name: "Push production docker image to Docker Hub"
+    #   script:
+    #     # Install dependencies
+    #     - yarn install
+    #     # Build source
+    #     - yarn build
+    #     # Build docker image
+    #     - docker build -t $IMAGE_NAME .
+    #     # List docker images
+    #     - docker images
+    #     # Push prod-docker image to dockerhub
+    #     - docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD"
+    #     - docker tag $IMAGE_NAME:latest $DOCKER_USER/$IMAGE_NAME:$VERSION-prod
+    #     - docker tag $IMAGE_NAME:latest $DOCKER_USER/$IMAGE_NAME:latest
+    #     - docker push $DOCKER_USER/$IMAGE_NAME:latest
+    #     - docker push $DOCKER_USER/$IMAGE_NAME:$VERSION-prod
     - stage: deploy
       name: "Deploy service to Kubernetes"
       script:
+        # Debug
+        - which python
         # Move to the project root directory
         - cd ..
         # Install dependencies
-        - pip install -r requirements.txt
+        - python -m pip install -r requirements.txt --upgrade
+        # - python -m pip install -r requirements.txt
+        # List installed packages
+        - python -m pip list
         # Confirm presence of ansible
-        - ansible-playbook --help
+        - ansible-playbook --version
         # Run master playbook
         - cd .travis/ansible
-        - ansible-playbook site.yml -i config/hosts.yml --extra-vars "env=$TRAVIS_BRANCH version=$VERSION deployment_type=$TRAVIS_BRANCH"
+        - ansible-playbook site.yml -i config/hosts.yml --extra-vars "env=$TRAVIS_BRANCH version=$VERSION deployment_type=$TRAVIS_BRANCH" -vvv
 
 notifications:
   email: false
