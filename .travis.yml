@@ -81,6 +81,9 @@ jobs:
         - pip install -r requirements.txt
         # Confirm presence of ansible
         - ansible-playbook --help
+        # Run master playbook
+        - cd .travis/ansible
+        - ansible-playbook site.yml -i config/hosts.yml --extra-vars "env=$TRAVIS_BRANCH version=$VERSION deployment_type=$TRAVIS_BRANCH"
 
 notifications:
   email: false
