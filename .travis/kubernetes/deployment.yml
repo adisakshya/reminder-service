@@ -1,50 +1,51 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dev-reminder-service
-  namespace: development
+  name: '{{ env_prefix }}-{{ resource_name }}'
+  namespace: '{{ env }}'
   labels:
-    app: dev-reminder-service
+    app: '{{ env_prefix }}-{{ resource_name }}'
 spec:
   selector:
     matchLabels:
-      app: dev-reminder-service
+      app: '{{ env_prefix }}-{{ resource_name }}'
   replicas: 1
   template:
     metadata:
       labels:
-        app: dev-reminder-service
+        app: '{{ env_prefix }}-{{ resource_name }}'
     spec:
       containers:
-        - name: dev-reminder-service
-          image: adisakshya/reminder-service:1.0.0-dev
+        - name: '{{ env_prefix }}-{{ resource_name }}'
+          image: '{{ docker_image_name }}:{{ docker_image_tag }}'
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           env:
             - name: NODE_ENV
-              value: development
+              value: '{{ env }}'
             - name: DB_HOST
               valueFrom:
                 secretKeyRef:
-                  name: dev-reminder-db-secrets
+                  name: '{{ env_prefix }}-reminder-db-secrets'
                   key: host
             - name: DB_NAME
               valueFrom:
                 secretKeyRef:
-                  name: dev-reminder-db-secrets
+                  name: '{{ env_prefix }}-reminder-db-secrets'
                   key: name
             - name: DB_PASS
               valueFrom:
                 secretKeyRef:
-                  name: dev-reminder-db-secrets
+                  name: '{{ env_prefix }}-reminder-db-secrets'
                   key: password
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
-                  name: dev-reminder-db-secrets
+                  name: '{{ env_prefix }}-reminder-db-secrets'
                   key: user
             - name: EVENT_TOPIC_ARN
               valueFrom:
                 secretKeyRef:
-                  name: dev-sns-topics-secrets
+                  name: '{{ env_prefix }}-sns-topics-secrets'
                   key: event_topic
