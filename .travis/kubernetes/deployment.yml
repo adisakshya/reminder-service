@@ -18,6 +18,7 @@ spec:
       containers:
         - name: '{{ env_prefix }}-{{ resource_name }}'
           image: '{{ docker_image_name }}:{{ docker_image_tag }}'
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           env:
