@@ -14,11 +14,11 @@ stages:
     if: branch = development AND type = push AND fork = false
   - name: push-prod-docker-image
     if: branch = production AND type = push AND fork = false
+  - name: deploy
+    if: (branch = development OR branch = production) AND type = push AND fork = false
 
 
 install:
-  # Install Python dependencies
-  - pip install -r requirements.txt
   # Install NodeJS and Yarn
   - nvm install 12.17.0
   - npm install -g yarn
@@ -72,6 +72,15 @@ jobs:
         - docker tag $IMAGE_NAME:latest $DOCKER_USER/$IMAGE_NAME:latest
         - docker push $DOCKER_USER/$IMAGE_NAME:latest
         - docker push $DOCKER_USER/$IMAGE_NAME:$VERSION-prod
+    - stage: deploy
+      name: "Deploy service to Kubernetes"
+      script:
+        # Move to the project root directory
+        - cd ..
+        # Install dependencies
+        - pip install -r requirements.txt
+        # Confirm presence of ansible
+        - ansible-playbook --help
 
 notifications:
   email: false
