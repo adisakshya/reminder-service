@@ -35,47 +35,47 @@ before_script:
 
 jobs:
   include:
-    # - stage: build
-    #   name: "Build and Test"
-    #   script:
-    #     # Install dependencies
-    #     - yarn install
-    #     # Build source
-    #     - yarn build
-    #     # Run tests
-    #     - yarn test --passWithNoTests
-    # - stage: push-dev-docker-image
-    #   name: "Push development docker image to Docker Hub"
-    #   script:
-    #     # Install dependencies
-    #     - yarn install
-    #     # Build source
-    #     - yarn build
-    #     # Build docker image
-    #     - docker build -t $IMAGE_NAME .
-    #     # List docker images
-    #     - docker images
-    #     # Push dev-docker image to dockerhub
-    #     - docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD"
-    #     - docker tag $IMAGE_NAME:latest $DOCKER_USER/$IMAGE_NAME:$VERSION-dev
-    #     - docker push $DOCKER_USER/$IMAGE_NAME:$VERSION-dev
-    # - stage: push-prod-docker-image
-    #   name: "Push production docker image to Docker Hub"
-    #   script:
-    #     # Install dependencies
-    #     - yarn install
-    #     # Build source
-    #     - yarn build
-    #     # Build docker image
-    #     - docker build -t $IMAGE_NAME .
-    #     # List docker images
-    #     - docker images
-    #     # Push prod-docker image to dockerhub
-    #     - docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD"
-    #     - docker tag $IMAGE_NAME:latest $DOCKER_USER/$IMAGE_NAME:$VERSION-prod
-    #     - docker tag $IMAGE_NAME:latest $DOCKER_USER/$IMAGE_NAME:latest
-    #     - docker push $DOCKER_USER/$IMAGE_NAME:latest
-    #     - docker push $DOCKER_USER/$IMAGE_NAME:$VERSION-prod
+    - stage: build
+      name: "Build and Test"
+      script:
+        # Install dependencies
+        - yarn install
+        # Build source
+        - yarn build
+        # Run tests
+        - yarn test --passWithNoTests
+    - stage: push-dev-docker-image
+      name: "Push development docker image to Docker Hub"
+      script:
+        # Install dependencies
+        - yarn install
+        # Build source
+        - yarn build
+        # Build docker image
+        - docker build -t $IMAGE_NAME .
+        # List docker images
+        - docker images
+        # Push dev-docker image to dockerhub
+        - docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD"
+        - docker tag $IMAGE_NAME:latest $DOCKER_USER/$IMAGE_NAME:$VERSION-dev
+        - docker push $DOCKER_USER/$IMAGE_NAME:$VERSION-dev
+    - stage: push-prod-docker-image
+      name: "Push production docker image to Docker Hub"
+      script:
+        # Install dependencies
+        - yarn install
+        # Build source
+        - yarn build
+        # Build docker image
+        - docker build -t $IMAGE_NAME .
+        # List docker images
+        - docker images
+        # Push prod-docker image to dockerhub
+        - docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD"
+        - docker tag $IMAGE_NAME:latest $DOCKER_USER/$IMAGE_NAME:$VERSION-prod
+        - docker tag $IMAGE_NAME:latest $DOCKER_USER/$IMAGE_NAME:latest
+        - docker push $DOCKER_USER/$IMAGE_NAME:latest
+        - docker push $DOCKER_USER/$IMAGE_NAME:$VERSION-prod
     - stage: deploy
       name: "Deploy service to Kubernetes"
       script:
@@ -83,9 +83,15 @@ jobs:
         - which python
         # Move to the project root directory
         - cd ..
+        # Initialize Kubeconfig
+        - sed -i -e 's|K8S_CA_CERT|'"${K8S_CA_CERT}"'|g' .travis/ansible/config/kubeconfig
+        - sed -i -e 's|K8S_ENDPOINT|'"${K8S_ENDPOINT}"'|g' .travis/ansible/config/kubeconfig
+        - sed -i -e 's|K8S_ADMIN_CERT|'"${K8S_ADMIN_CERT}"'|g' .travis/ansible/config/kubeconfig
+        - sed -i -e 's|K8S_ADMIN_KEY|'"${K8S_ADMIN_KEY}"'|g' .travis/ansible/config/kubeconfig
+        - sed -i -e 's|K8S_USER_NAME|'"${K8S_USER_NAME}"'|g' .travis/ansible/config/kubeconfig
+        - sed -i -e 's|K8S_CLUSTER_NAME|'"${K8S_CLUSTER_NAME}"'|g' .travis/ansible/config/kubeconfig
         # Install dependencies
         - python -m pip install -r requirements.txt --upgrade
-        # - python -m pip install -r requirements.txt
         # List installed packages
         - python -m pip list
         # Confirm presence of ansible
