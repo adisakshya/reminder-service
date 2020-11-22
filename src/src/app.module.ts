@@ -16,7 +16,7 @@ import {EventModule} from "@event/event.module";
             host: config.dbHost,
             entities: [Reminder],
             logging: !config.isProduction,
-            synchronize: true,
+            synchronize: false,
         }),
         imports: [CommonModule],
         inject: [ApiConfigService]
