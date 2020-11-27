@@ -4,4 +4,4 @@
 
 ## Architecture
 
-![Reminder Service Architecture](./assets/reminder-service-architecture.png)
+![Reminder Service Architecture](https://raw.githubusercontent.com/adisakshya/reminder-service/master/assets/reminder-service-architecture.png)
