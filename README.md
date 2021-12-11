@@ -9,7 +9,7 @@
 
 Reminder Service manages CRUD operations on the reminder entity. Clients can interact with API endpoints provided by this service to perform these operations. This service interfaces with PostgreSQL database to store the reminders created by various users. The most recent state of the reminder entity is maintained in the reminders database.
 
-All the operations that are being performed on the reminder entity by the user are packed as an event-object and published to an AWS SNS topic which then forwards the event-message to the AWS SQS event-queue from where this event-message is consumed by the event-service.
+All the operations that are being performed on the reminder entity by the user are packed as an event-object and published to an AWS SNS topic which then forwards the event-message to the AWS SQS event-queue from where this event-message is consumed by the [event-service](https://github.com/adisakshya/event-service).
 
 ## Operating Instructions
 
